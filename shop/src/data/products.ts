@@ -1,0 +1,163 @@
+import { Product } from "../types";
+
+export const mockProducts: Product[] = [
+  // ── Одежда ──
+  {
+    id: 1,
+    title: "Добок WTF Premium",
+    price: 4990,
+    category: "clothing",
+    image: "",
+    description: "Официальное кимоно для соревнований по стандарту WTF. Лёгкая дышащая ткань, усиленные швы, идеальная посадка для динамичных движений.",
+    rating: { rate: 4.8, count: 134 },
+    badge: "Хит",
+  },
+  {
+    id: 2,
+    title: "Добок тренировочный",
+    price: 2490,
+    category: "clothing",
+    image: "",
+    description: "Удобный добок для ежедневных тренировок. Хлопок с полиэстером, не сковывает движений, легко стирается.",
+    rating: { rate: 4.5, count: 89 },
+  },
+  {
+    id: 3,
+    title: "Футболка TKD Athletic",
+    price: 1290,
+    category: "clothing",
+    image: "",
+    description: "Спортивная футболка с вышитым логотипом тхэквондо. Влагоотводящий материал, доступна в нескольких цветах.",
+    rating: { rate: 4.3, count: 56 },
+  },
+
+  // ── Обувь ──
+  {
+    id: 4,
+    title: "Степки для тхэквондо Pro",
+    price: 2190,
+    category: "shoes",
+    image: "",
+    description: "Профессиональные степки с нескользящей подошвой и усиленным носком. Обеспечивают сцепление на татами и защиту пальцев.",
+    rating: { rate: 4.7, count: 203 },
+    badge: "Топ",
+  },
+  {
+    id: 5,
+    title: "Степки тренировочные Light",
+    price: 1490,
+    category: "shoes",
+    image: "",
+    description: "Лёгкие степки для ежедневных тренировок. Тонкая подошва для ощущения татами, эластичный верх.",
+    rating: { rate: 4.4, count: 77 },
+  },
+  {
+    id: 6,
+    title: "Носки TKD антискользящие",
+    price: 490,
+    category: "shoes",
+    image: "",
+    description: "Специальные носки с силиконовым напылением на подошве. Предотвращают скольжение на гладких поверхностях.",
+    rating: { rate: 4.2, count: 145 },
+  },
+
+  // ── Пояса ──
+  {
+    id: 7,
+    title: "Пояс WTF — Чёрный Dan",
+    price: 890,
+    category: "belts",
+    image: "",
+    description: "Официальный чёрный пояс для данов по WTF. Плотный атлас, вышитые иероглифы, ширина 4.5 см.",
+    rating: { rate: 4.9, count: 312 },
+    badge: "Новинка",
+  },
+  {
+    id: 8,
+    title: "Набор поясов Geup (10 шт.)",
+    price: 2990,
+            category: "belts",
+    image: "",
+    description: "Полный комплект поясов от белого до красно-чёрного. Хлопок премиум, стойкий краситель, для детей и взрослых.",
+    rating: { rate: 4.7, count: 98 },
+  },
+  {
+    id: 9,
+    title: "Пояс цветной одиночный",
+    price: 390,
+    category: "belts",
+    image: "",
+    description: "Одиночный цветной пояс на выбор: белый, жёлтый, зелёный, синий, красный. Стандартная ширина 4 см.",
+    rating: { rate: 4.4, count: 201 },
+  },
+
+  // ── Защита ──
+  {
+    id: 10,
+    title: "Электронный хогу WTF",
+    price: 12900,
+    category: "protection",
+    image: "",
+    description: "Электронный жилет для соревнований с системой подсчёта очков. Совместим со всеми системами WTF. Размеры S/M/L/XL.",
+    rating: { rate: 4.8, count: 67 },
+    badge: "Проф.",
+  },
+  {
+    id: 11,
+    title: "Шлем с забралом Full",
+    price: 3490,
+    category: "protection",
+    image: "",
+    description: "Защитный шлем с пластиковым забралом. Плотный пенополиуретан, регулируемые ремни, вентиляция.",
+    rating: { rate: 4.6, count: 143 },
+  },
+  {
+    id: 12,
+    title: "Комплект защиты Junior",
+    price: 4990,
+    category: "protection",
+    image: "",
+    description: "Детский комплект: шлем + хогу + наручи + щитки. Мягкий EVA-пенопласт, яркие цвета, возраст 5–12 лет.",
+    rating: { rate: 4.7, count: 88 },
+    badge: "Для детей",
+  },
+
+  // ── Тренировочная экипировка ──
+  {
+    id: 13,
+    title: "Лапа изогнутая пара",
+    price: 2490,
+    category: "equipment",
+    image: "",
+    description: "Профессиональные лапы для отработки ударов. Кожзам, толщина 5 см, усиленный захват, для тренеров и партнёров.",
+    rating: { rate: 4.8, count: 176 },
+    badge: "Хит",
+  },
+  {
+    id: 14,
+    title: "Макивара напольная",
+    price: 7900,
+    category: "equipment",
+    image: "",
+    description: "Напольный тренажёр для ударной техники. Регулируемая высота 120–180 см, устойчивое основание, сменная поверхность.",
+    rating: { rate: 4.5, count: 54 },
+  },
+  {
+    id: 15,
+    title: "Скакалка скоростная",
+    price: 990,
+    category: "equipment",
+    image: "",
+    description: "Скоростная скакалка для развития координации и выносливости. Шариковые подшипники, регулируемая длина.",
+    rating: { rate: 4.3, count: 231 },
+  },
+];
+
+export const CATEGORIES = [
+  { id: "all",        label: "Все товары" },
+  { id: "clothing",   label: "Одежда" },
+  { id: "shoes",      label: "Обувь" },
+  { id: "belts",      label: "Пояса" },
+  { id: "protection", label: "Защита" },
+  { id: "equipment",  label: "Тренировочная экипировка" },
+] as const;

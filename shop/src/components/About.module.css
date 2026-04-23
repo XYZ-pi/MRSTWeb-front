@@ -1,0 +1,113 @@
+.about {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 6rem 2rem 4rem;
+}
+
+.inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 4rem;
+  align-items: start;
+  margin-bottom: 4rem;
+}
+
+.badge {
+  display: inline-block;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+}
+
+.sub {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.75;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  transition: var(--transition);
+}
+.feature:hover {
+  border-color: rgba(108,99,255,0.3);
+  transform: translateY(-2px);
+}
+
+.featureIcon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.feature div { display: flex; flex-direction: column; gap: 3px; }
+.feature strong { font-size: 13px; font-weight: 600; color: var(--text); }
+.feature span { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+/* ── Belt decoration ── */
+.belts {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  gap: 8px;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+}
+
+.belt {
+  flex: 1;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.9);
+  transition: var(--transition);
+  cursor: default;
+}
+.belt:hover { transform: scaleY(1.15); }
+
+.belt:nth-child(1) { background: #e8e8e8; color: #333; }
+.belt:nth-child(2) { background: #f5c518; color: #333; }
+.belt:nth-child(3) { background: #22a845; }
+.belt:nth-child(4) { background: #1a6fc4; }
+.belt:nth-child(5) { background: #c0392b; }
+.belt:nth-child(6) { background: #111; }
+
+.belt span { writing-mode: horizontal-tb; }
+
+@media (max-width: 768px) {
+  .inner { grid-template-columns: 1fr; gap: 2rem; }
+  .features { grid-template-columns: 1fr; }
+  .belt span { display: none; }
+}
