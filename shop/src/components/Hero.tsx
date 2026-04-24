@@ -16,7 +16,14 @@ export const Hero: React.FC<HeroProps> = ({ onCatalogClick }) => {
         <div className={styles.circle2} />
       </div>
 
-      <div className={styles.content}>
+      <div className={styles.content} style={{display:"grid", gridTemplateColumns:"1fr 1fr", alignItems:"center", gap:"3rem"}}>
+        <div className={styles.heroImage}>
+  <img
+    src="https://images.unsplash.com/photo-1555597673-b21d5c935865?w=600&h=600&fit=crop"
+    alt="Тхэквондо"
+    style={{width:"100%", borderRadius:"20px", objectFit:"cover"}}
+  />
+</div>
         <div className={styles.badge}>Официальный партнёр WT с 2016 года</div>
 
         <h1 className={styles.title}>

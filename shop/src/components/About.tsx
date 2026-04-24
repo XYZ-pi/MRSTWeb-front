@@ -16,12 +16,12 @@ export const About = forwardRef<HTMLElement>((_, ref) => {
         <div className={styles.right}>
           <div className={styles.features}>
             {[
-              { icon: "🏆", title: "Официальный партнёр WTF", desc: "Вся продукция сертифицирована и допущена к соревнованиям" },
-              { icon: "🚚", title: "Доставка по всей России", desc: "Отправляем в любой город от 1 до 5 дней" },
+              { icon: "🏆", title: "Официальный партнёр WT", desc: "Вся продукция сертифицирована и допущена к соревнованиям" },
+              { icon: "🚚", title: "Доставка по всей Молдове", desc: "Отправляем в любой город от 1 до 5 дней" },
               { icon: "📏", title: "Помощь с размером", desc: "Консультация тренера по выбору экипировки" },
-              { icon: "↩", title: "Возврат 30 дней", desc: "Если не подошло — вернём деньги без вопросов" },
+              { icon: "↩", title: "Возврат 30 дней", desc: "Если не подошло — вернём деньги" },
               { icon: "🔧", title: "Гарантия качества", desc: "Работаем только с проверенными производителями" },
-              { icon: "💬", title: "Поддержка 24/7", desc: "Ответим на любой вопрос по экипировке" },
+              { icon: "💬", title: "Поддержка", desc: "Ответим на любой вопрос по экипировке" },
             ].map(({ icon, title, desc }) => (
               <div key={title} className={styles.feature}>
                 <span className={styles.featureIcon}>{icon}</span>
@@ -36,10 +36,22 @@ export const About = forwardRef<HTMLElement>((_, ref) => {
       </div>
 
       <div className={styles.belts}>
-        {["Белый", "Жёлтый", "Зелёный", "Синий", "Красный", "Чёрный"].map((color, i) => (
-          <div key={color} className={styles.belt} style={{ "--i": i } as React.CSSProperties}>
-            <span>{color}</span>
-          </div>
+        {[
+  { label: "Белый",        bg: "#e8e8e8", text: "#333" },
+  { label: "Бело-жёлтый", bg: "linear-gradient(90deg,#e8e8e8 50%,#f5c518 50%)", text: "#333" },
+  { label: "Жёлтый",      bg: "#f5c518", text: "#333" },
+  { label: "Жёлто-зелёный",  bg: "linear-gradient(90deg,#f5c518 50%,#22a845 50%)", text: "#333" },
+  { label: "Зелёный",     bg: "#22a845", text: "#fff" },
+  { label: "Зелёно-синий",  bg: "linear-gradient(90deg,#22a845 50%,#1a6fc4 50%)", text: "#fff" },
+  { label: "Синий",       bg: "#1a6fc4", text: "#fff" },
+  { label: "Сине-красный",bg: "linear-gradient(90deg,#1a6fc4 50%,#c0392b 50%)", text: "#fff" },
+  { label: "Красный",     bg: "#c0392b", text: "#fff" },
+  { label: "Красно-чёрный",bg: "linear-gradient(90deg,#c0392b 50%,#111 50%)", text: "#fff" },
+  { label: "Чёрный",      bg: "#111",    text: "#fff" },
+].map(({ label, bg, text }) => (
+          <div key={label} className={styles.belt} style={{ background: bg, color: text }}>
+  <span>{label}</span>
+</div>
         ))}
       </div>
     </section>
