@@ -78,8 +78,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
             <p className={styles.description}>{product.description}</p>
 
             <div className={styles.priceRow}>
-              <span className={styles.price}>{product.price.toLocaleString("ru-RU")} ₽</span>
-              <span className={styles.oldPrice}>{Math.round(product.price * 1.2).toLocaleString("ru-RU")} ₽</span>
+{product.price.toLocaleString("ro-MD")} MDL              <span className={styles.oldPrice}>{Math.round(product.price * 1.2).toLocaleString("ro-MD")} MDL</span>
               <span className={styles.discount}>-20%</span>
             </div>
 

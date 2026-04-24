@@ -64,6 +64,10 @@
   position: relative;
   z-index: 1;
   animation: fadeUp 0.8s ease both;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 3rem;
 }
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(30px); }

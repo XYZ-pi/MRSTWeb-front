@@ -31,8 +31,8 @@
 }
 
 .logoImg {
-  width: 56px;
-  height: 56px;
+  width: 68px;
+  height: 68px;
   object-fit: contain;
   filter: drop-shadow(0 0 6px rgba(108,99,255,0.5));
 }
@@ -43,21 +43,12 @@
   gap: 1px;
 }
 
-.logoTKD {
+.logoTKD, .logoEquip {
   font-family: 'Syne', sans-serif;
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 800;
   color: var(--text);
-  letter-spacing: 0.02em;
-  line-height: 1;
-}
-
-.logoEquip {
-  font-family: 'Syne', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-muted);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   line-height: 1;
 }
 

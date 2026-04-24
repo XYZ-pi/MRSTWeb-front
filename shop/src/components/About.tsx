@@ -10,7 +10,7 @@ export const About = forwardRef<HTMLElement>((_, ref) => {
           <h2 className={styles.title}>Всё для<br />тхэквондо —<br />в одном месте</h2>
           <p className={styles.sub}>
             TKDequip — специализированный магазин экипировки для тхэквондо.
-            Мы работаем с 2015 года и являемся официальным партнёром WTF в России.
+            Мы работаем с 2016 года и являемся официальным партнёром WT в Молдове.
           </p>
         </div>
         <div className={styles.right}>

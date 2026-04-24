@@ -75,8 +75,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
         <div className={styles.footer}>
           <div>
-            <span className={styles.price}>{product.price.toLocaleString("ru-RU")} ₽</span>
-          </div>
+<span className={styles.price}>{product.price.toLocaleString("ro-MD")} MDL</span>          </div>
           <button
             className={`${styles.cartBtn} ${inCart ? styles.inCart : ""}`}
             onClick={(e) => { e.stopPropagation(); onAddToCart(product); }}

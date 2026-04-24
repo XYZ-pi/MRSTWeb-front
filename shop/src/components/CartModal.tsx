@@ -55,7 +55,7 @@ export const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose, cart, onR
                   </div>
                   <div className={styles.itemInfo}>
                     <p className={styles.itemTitle}>{item.title}</p>
-                    <p className={styles.itemPrice}>{(item.price * item.quantity).toLocaleString("ru-RU")} ₽</p>
+                    <p className={styles.itemPrice}>{(item.price * item.quantity).toLocaleString("ro-MD")} MDL</p>
                   </div>
                   <div className={styles.itemQty}>
                     <button className={styles.qtyBtn} onClick={() => onRemove(item.id)}>−</button>
@@ -72,7 +72,7 @@ export const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose, cart, onR
           <div className={styles.footer}>
             <div className={styles.totalRow}>
               <span>Итого:</span>
-              <span className={styles.totalPrice}>{total.toLocaleString("ru-RU")} ₽</span>
+              <span className={styles.totalPrice}>{total.toLocaleString("ro-MD")} MDL</span>
             </div>
             <button className={styles.checkoutBtn}>Оформить заказ →</button>
           </div>

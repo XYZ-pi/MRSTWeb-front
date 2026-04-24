@@ -15,9 +15,9 @@ export const Footer: React.FC = () => {
               />
               <span>TKDequip</span>
             </div>
-            <p>Официальный партнёр WTF.<br />Профессиональная экипировка для тхэквондо.</p>
+            <p>Официальный партнёр WT.<br />Профессиональная экипировка для тхэквондо.</p>
             <div className={styles.cert}>
-              <span>✓ Сертифицировано WTF</span>
+              <span>✓ Сертифицировано WT</span>
             </div>
           </div>
 
@@ -44,9 +44,9 @@ export const Footer: React.FC = () => {
 
           <div className={styles.contact}>
             <h4>Контакты</h4>
-            <p>📧 info@tkdequip.ru</p>
-            <p>📞 +7 (800) 555-35-35</p>
-            <p>📍 Москва, ул. Спортивная, 1</p>
+            <p>info@tkdequip.ru</p>
+            <p>+373 (68) 111-111</p>
+            <p>Кишинёв, ул. Спортивная, 1</p>
             <div className={styles.socials}>
               {["VK", "TG", "YT"].map((s) => (
                 <button key={s} className={styles.socialBtn}>{s}</button>
@@ -57,7 +57,7 @@ export const Footer: React.FC = () => {
 
         <div className={styles.bottom}>
           <p>© {new Date().getFullYear()} TKDequip. Все права защищены.</p>
-          <p>Официальный партнёр World Taekwondo Federation</p>
+          <p>Официальный партнёр World Taekwondo</p>
         </div>
       </div>
     </footer>

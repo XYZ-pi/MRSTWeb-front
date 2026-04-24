@@ -4,18 +4,18 @@ export const mockProducts: Product[] = [
   // ── Одежда ──
   {
     id: 1,
-    title: "Добок WTF Premium",
-    price: 4990,
+    title: "Добок TUSAH EVO UNIFORM",
+    price: 3999,
     category: "clothing",
     image: "",
-    description: "Официальное кимоно для соревнований по стандарту WTF. Лёгкая дышащая ткань, усиленные швы, идеальная посадка для динамичных движений.",
+    description: "Официальный добок для соревнований по стандарту WT. Лёгкая дышащая ткань, усиленные швы, идеальная посадка для динамичных движений.",
     rating: { rate: 4.8, count: 134 },
     badge: "Хит",
   },
   {
     id: 2,
-    title: "Добок тренировочный",
-    price: 2490,
+    title: "Добок TUSAH EZ FIT LITE UNIFORM",
+    price: 1000,
     category: "clothing",
     image: "",
     description: "Удобный добок для ежедневных тренировок. Хлопок с полиэстером, не сковывает движений, легко стирается.",
@@ -23,12 +23,21 @@ export const mockProducts: Product[] = [
   },
   {
     id: 3,
-    title: "Футболка TKD Athletic",
-    price: 1290,
+    title: "Добок STARTER",
+    price: 600,
     category: "clothing",
     image: "",
-    description: "Спортивная футболка с вышитым логотипом тхэквондо. Влагоотводящий материал, доступна в нескольких цветах.",
+    description: "Удобный добок для ежедневных тренировок. Для самых маленьких спортсменов.",
     rating: { rate: 4.3, count: 56 },
+  },
+  {
+    id: 4,
+    title: "Добок STARTER",
+    price: 650,
+    category: "clothing",
+    image: "",
+    description: "Удобный детский добок для ежедневных тренировок.",
+    rating: { rate: 4.4, count: 56 },
   },
 
   // ── Обувь ──
