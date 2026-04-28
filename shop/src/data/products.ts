@@ -7,35 +7,38 @@ export const mockProducts: Product[] = [
     title: "Добок TUSAH EVO UNIFORM",
     price: 3999,
     category: "clothing",
-    image: "",
+    image: "/dobok evo.png",
     description: "Официальный добок для соревнований по стандарту WT. Лёгкая дышащая ткань, усиленные швы, идеальная посадка для динамичных движений.",
     rating: { rate: 4.8, count: 134 },
     badge: "Хит",
   },
+
   {
     id: 2,
     title: "Добок TUSAH EZ FIT LITE UNIFORM",
     price: 1000,
     category: "clothing",
-    image: "",
+    image: "/dobok ez fit.png",
     description: "Удобный добок для ежедневных тренировок. Хлопок с полиэстером, не сковывает движений, легко стирается.",
     rating: { rate: 4.5, count: 89 },
   },
+
   {
     id: 3,
     title: "Добок STARTER",
     price: 600,
     category: "clothing",
-    image: "",
+    image: "/starter 600.png",
     description: "Удобный добок для ежедневных тренировок. Для самых маленьких спортсменов.",
     rating: { rate: 4.3, count: 56 },
   },
+
   {
     id: 4,
     title: "Добок STARTER",
     price: 650,
     category: "clothing",
-    image: "",
+    image: "/starter 650.png",
     description: "Удобный детский добок для ежедневных тренировок.",
     rating: { rate: 4.4, count: 56 },
   },
@@ -43,46 +46,30 @@ export const mockProducts: Product[] = [
   // ── Обувь ──
   {
     id: 4,
-    title: "Степки для тхэквондо Pro",
-    price: 2190,
+    title: "Степки TUSAH CLASSIC SHOES",
+    price: 750,
     category: "shoes",
-    image: "",
-    description: "Профессиональные степки с нескользящей подошвой и усиленным носком. Обеспечивают сцепление на татами и защиту пальцев.",
+    image: "/classic.png",
+    description: "Классические степки с нескользящей подошвой и усиленным носком. Обеспечивают сцепление на доянге и защиту пальцев.",
     rating: { rate: 4.7, count: 203 },
     badge: "Топ",
   },
+
   {
     id: 5,
-    title: "Степки тренировочные Light",
-    price: 1490,
+    title: "Степки EZ-FIT SHOES",
+    price: 699,
     category: "shoes",
-    image: "",
-    description: "Лёгкие степки для ежедневных тренировок. Тонкая подошва для ощущения татами, эластичный верх.",
-    rating: { rate: 4.4, count: 77 },
-  },
-  {
-    id: 6,
-    title: "Носки TKD антискользящие",
-    price: 490,
-    category: "shoes",
-    image: "",
-    description: "Специальные носки с силиконовым напылением на подошве. Предотвращают скольжение на гладких поверхностях.",
-    rating: { rate: 4.2, count: 145 },
-  },
-
-  // ── Пояса ──
-  {
-    id: 7,
-    title: "Пояс WTF — Чёрный Dan",
-    price: 890,
-    category: "belts",
-    image: "",
-    description: "Официальный чёрный пояс для данов по WTF. Плотный атлас, вышитые иероглифы, ширина 4.5 см.",
+    image: "/stepki.png",
+    description: "Профессиональные степки с нескользящей подошвой и усиленным носком.",
     rating: { rate: 4.9, count: 312 },
     badge: "Новинка",
   },
+
+  // ── Пояса ──
+  
   {
-    id: 8,
+    id: 6,
     title: "Набор поясов Geup (10 шт.)",
     price: 2990,
             category: "belts",
@@ -90,8 +77,9 @@ export const mockProducts: Product[] = [
     description: "Полный комплект поясов от белого до красно-чёрного. Хлопок премиум, стойкий краситель, для детей и взрослых.",
     rating: { rate: 4.7, count: 98 },
   },
+
   {
-    id: 9,
+    id: 7,
     title: "Пояс цветной одиночный",
     price: 390,
     category: "belts",
@@ -102,38 +90,77 @@ export const mockProducts: Product[] = [
 
   // ── Защита ──
   {
-    id: 10,
-    title: "Электронный хогу WTF",
-    price: 12900,
+    id: 8,
+    title: "Накладки на ноги",
+    price: 580,
     category: "protection",
-    image: "",
-    description: "Электронный жилет для соревнований с системой подсчёта очков. Совместим со всеми системами WTF. Размеры S/M/L/XL.",
+    image: "/nogi.png",
+    description: "Накладки на ноги. Совместимы со всеми системами WT. Размеры S/M/L/XL.",
     rating: { rate: 4.8, count: 67 },
-    badge: "Проф.",
-  },
-  {
-    id: 11,
-    title: "Шлем с забралом Full",
-    price: 3490,
-    category: "protection",
-    image: "",
-    description: "Защитный шлем с пластиковым забралом. Плотный пенополиуретан, регулируемые ремни, вентиляция.",
-    rating: { rate: 4.6, count: 143 },
-  },
-  {
-    id: 12,
-    title: "Комплект защиты Junior",
-    price: 4990,
-    category: "protection",
-    image: "",
-    description: "Детский комплект: шлем + хогу + наручи + щитки. Мягкий EVA-пенопласт, яркие цвета, возраст 5–12 лет.",
-    rating: { rate: 4.7, count: 88 },
-    badge: "Для детей",
   },
 
-  // ── Тренировочная экипировка ──
+  {
+    id: 9,
+    title: "Накладки на руки",
+    price: 500,
+    category: "protection",
+    image: "/ruki.png",
+    description: "Накладки на руки. Совместимы со всеми системами WT. Размеры S/M/L/XL.",
+    rating: { rate: 4.6, count: 143 },
+  },
+
+  {
+    id: 10,
+    title: "Защитный шлем",
+    price: 800,
+    category: "protection",
+    image: "/shlem.png",
+    description: "Защитный шлем. Плотный пенополиуретан, регулируемые ремни, вентиляция.",
+    rating: { rate: 4.7, count: 88 },
+  },
+
+{
+    id: 11,
+    title: "Красный защитный шлем",
+    price: 800,
+    category: "protection",
+    image: "/shlem krasnii.png",
+    description: "Красный защитный шлем. Плотный пенополиуретан, регулируемые ремни, вентиляция.",
+    rating: { rate: 4.7, count: 88 },
+  },
+
+  {
+    id: 12,
+    title: "Перчатки",
+    price: 400,
+    category: "protection",
+    image: "/manusi.png",
+    description: "Перчатки для защиты рук. Плотный материал, удобное облегание, для тренировок и соревнований.",
+    rating: { rate: 4.7, count: 88 },
+  },
+
   {
     id: 13,
+    title: "Футы тренировочные",
+    price: 500,
+    category: "protection",
+    image: "/futi.png",
+    description: "Футы тренировочные. Плотный материал, удобное облегание, для тренировок и соревнований.",
+    rating: { rate: 4.7, count: 88 },
+  },
+
+    {
+    id: 14,
+    title: "Протектор",
+    price: 900,
+    category: "protection",
+    image: "/vesta.png",
+    description: "Протектор. Плотный материал, удобное облегание, для тренировок и соревнований.",
+    rating: { rate: 4.7, count: 88 },
+  },
+  // ── Тренировочная экипировка ──
+  {
+    id: 15,
     title: "Лапа изогнутая пара",
     price: 2490,
     category: "equipment",
@@ -143,7 +170,7 @@ export const mockProducts: Product[] = [
     badge: "Хит",
   },
   {
-    id: 14,
+    id: 16,
     title: "Макивара напольная",
     price: 7900,
     category: "equipment",
@@ -152,7 +179,7 @@ export const mockProducts: Product[] = [
     rating: { rate: 4.5, count: 54 },
   },
   {
-    id: 15,
+    id: 17,
     title: "Скакалка скоростная",
     price: 990,
     category: "equipment",
