@@ -45,7 +45,7 @@ export const mockProducts: Product[] = [
 
   // ── Обувь ──
   {
-    id: 4,
+    id: 5,
     title: "Степки TUSAH CLASSIC SHOES",
     price: 750,
     category: "shoes",
@@ -56,7 +56,7 @@ export const mockProducts: Product[] = [
   },
 
   {
-    id: 5,
+    id: 6,
     title: "Степки EZ-FIT SHOES",
     price: 699,
     category: "shoes",
@@ -66,31 +66,11 @@ export const mockProducts: Product[] = [
     badge: "Новинка",
   },
 
-  // ── Пояса ──
   
-  {
-    id: 6,
-    title: "Набор поясов Geup (10 шт.)",
-    price: 2990,
-            category: "belts",
-    image: "",
-    description: "Полный комплект поясов от белого до красно-чёрного. Хлопок премиум, стойкий краситель, для детей и взрослых.",
-    rating: { rate: 4.7, count: 98 },
-  },
-
-  {
-    id: 7,
-    title: "Пояс цветной одиночный",
-    price: 390,
-    category: "belts",
-    image: "",
-    description: "Одиночный цветной пояс на выбор: белый, жёлтый, зелёный, синий, красный. Стандартная ширина 4 см.",
-    rating: { rate: 4.4, count: 201 },
-  },
 
   // ── Защита ──
   {
-    id: 8,
+    id: 7,
     title: "Накладки на ноги",
     price: 580,
     category: "protection",
@@ -100,7 +80,7 @@ export const mockProducts: Product[] = [
   },
 
   {
-    id: 9,
+    id: 8,
     title: "Накладки на руки",
     price: 500,
     category: "protection",
@@ -110,7 +90,7 @@ export const mockProducts: Product[] = [
   },
 
   {
-    id: 10,
+    id: 9,
     title: "Защитный шлем",
     price: 800,
     category: "protection",
@@ -120,7 +100,7 @@ export const mockProducts: Product[] = [
   },
 
 {
-    id: 11,
+    id: 10,
     title: "Красный защитный шлем",
     price: 800,
     category: "protection",
@@ -130,7 +110,7 @@ export const mockProducts: Product[] = [
   },
 
   {
-    id: 12,
+    id: 11,
     title: "Перчатки",
     price: 400,
     category: "protection",
@@ -140,7 +120,7 @@ export const mockProducts: Product[] = [
   },
 
   {
-    id: 13,
+    id: 12,
     title: "Футы тренировочные",
     price: 500,
     category: "protection",
@@ -150,7 +130,7 @@ export const mockProducts: Product[] = [
   },
 
     {
-    id: 14,
+    id: 13,
     title: "Протектор",
     price: 900,
     category: "protection",
@@ -160,32 +140,53 @@ export const mockProducts: Product[] = [
   },
   // ── Тренировочная экипировка ──
   {
-    id: 15,
-    title: "Лапа изогнутая пара",
-    price: 2490,
+    id: 14,
+    title: "Лапа двойная",
+    price: 600,
     category: "equipment",
-    image: "",
+    image: "/lapaa.png",
     description: "Профессиональные лапы для отработки ударов. Кожзам, толщина 5 см, усиленный захват, для тренеров и партнёров.",
     rating: { rate: 4.8, count: 176 },
     badge: "Хит",
   },
   {
-    id: 16,
-    title: "Макивара напольная",
-    price: 7900,
+    id: 15,
+    title: "Макивара",
+    price: 1250,
     category: "equipment",
-    image: "",
-    description: "Напольный тренажёр для ударной техники. Регулируемая высота 120–180 см, устойчивое основание, сменная поверхность.",
+    image: "/lapaaa.png",
+    description: "Тренажёр для отработки ударной техники. Натуральная кожа, плотный наполнитель, регулируемая высота, для клубов и домашних тренировок.",
     rating: { rate: 4.5, count: 54 },
   },
   {
-    id: 17,
-    title: "Скакалка скоростная",
-    price: 990,
+    id: 16,
+    title: "Макивара маленькая",
+    price: 940,
     category: "equipment",
-    image: "",
-    description: "Скоростная скакалка для развития координации и выносливости. Шариковые подшипники, регулируемая длина.",
+    image: "/lapa.png",
+    description: "Тренажёр для отработки ударной техники. Натуральная кожа, плотный наполнитель, регулируемая высота, для клубов и домашних тренировок.",
     rating: { rate: 4.3, count: 231 },
+  },
+  // ── Пояса ──
+  
+  {
+    id: 17,
+    title: "Тигр игрушка",
+    price: 450,
+    category: "other",
+    image: "/tigr.png",
+    description: "Игрушка в виде тигра. Символ силы и ловкости. Отличный подарок для юных спортсменов.",
+    rating: { rate: 4.7, count: 98 },
+  },
+
+  {
+    id: 18,
+    title: "Медведь игрушка",
+    price: 450,
+    category: "other",
+    image: "/medved.png",
+    description: "Игрушка в виде медведя. Символ силы и выносливости. Отличный подарок для юных спортсменов.",
+    rating: { rate: 4.4, count: 201 },
   },
 ];
 
@@ -193,7 +194,7 @@ export const CATEGORIES = [
   { id: "all",        label: "Все товары" },
   { id: "clothing",   label: "Одежда" },
   { id: "shoes",      label: "Обувь" },
-  { id: "belts",      label: "Пояса" },
   { id: "protection", label: "Защита" },
   { id: "equipment",  label: "Тренировочная экипировка" },
+  { id: "other",      label: "Другое" },
 ] as const;

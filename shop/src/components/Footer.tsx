@@ -26,9 +26,9 @@ export const Footer: React.FC = () => {
             <ul>
               <li>Одежда</li>
               <li>Обувь</li>
-              <li>Пояса</li>
               <li>Защита</li>
               <li>Тренировочная экипировка</li>
+              <li>Другое</li>
             </ul>
           </div>
 

@@ -59,9 +59,10 @@ export const Hero: React.FC<HeroProps> = ({ onCatalogClick }) => {
       {[
         { label: "Одежда" },
         { label: "Обувь" },
-        { label: "Пояса" },
         { label: "Защита" },
         { label: "Экипировка" },
+        { label: "Другое" },
+
       ].map(({ label }) => (
         <button key={label} className={styles.catChip} onClick={onCatalogClick}>
           {label}
