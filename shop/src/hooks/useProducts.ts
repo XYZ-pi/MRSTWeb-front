@@ -1,25 +1,34 @@
 import { useState, useEffect } from "react";
 import { Product } from "../types";
-import { mockProducts } from "../data/products";
 
-interface UseProductsReturn {
-  products: Product[];
-  loading: boolean;
-  error: string | null;
-}
+const BASE_URL = "https://localhost:7114/api";
 
-export function useProducts(): UseProductsReturn {
+export function useProducts() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Небольшая задержка для реалистичного ощущения загрузки
-    const t = setTimeout(() => {
-      setProducts(mockProducts);
-      setLoading(false);
-    }, 400);
-    return () => clearTimeout(t);
+    fetch(`${BASE_URL}/product/all`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Ошибка загрузки товаров");
+        return res.json();
+      })
+      .then((data) => {
+        const mapped: Product[] = data.map((p: any) => ({
+          id: p.id,
+          title: p.name,
+          price: p.price,
+          category: p.category,
+          image: `http://localhost:5173${p.image}`,          
+          description: p.description,
+          rating: { rate: p.ratingRate, count: p.ratingCount },
+          badge: p.badge ?? undefined,
+        }));
+        setProducts(mapped);
+      })
+      .catch((e) => setError(e.message))
+      .finally(() => setLoading(false));
   }, []);
 
   return { products, loading, error };

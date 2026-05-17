@@ -11,6 +11,17 @@ export default function CartPage() {
 
   const total = cart.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0);
 
+  const handleCheckout = () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    navigate("/checkout");
+  };
+
   return (
     <div>
       <Header
@@ -26,7 +37,9 @@ export default function CartPage() {
 
       <main className={styles.main}>
         <div className={styles.top}>
-          <button className={styles.back} onClick={() => navigate("/")}>← Назад</button>
+          <button className={styles.back} onClick={() => navigate("/")}>
+            ← Назад
+          </button>
           <h1 className={styles.title}>Корзина</h1>
         </div>
 
@@ -44,17 +57,20 @@ export default function CartPage() {
               {cart.map((item: any) => (
                 <div key={item.id} className={styles.item}>
                   <div className={styles.itemImg}>
-                    {item.image
-                      ? <img src={item.image} alt={item.title} />
-                      : <span className={styles.noImg}>📦</span>
-                    }
+                    {item.image ? (
+                      <img src={item.image} alt={item.title} />
+                    ) : (
+                      <span className={styles.noImg}>📦</span>
+                    )}
                   </div>
+
                   <div className={styles.itemInfo}>
                     <p className={styles.itemTitle}>{item.title}</p>
                     <p className={styles.itemPrice}>
                       {(item.price * item.quantity).toLocaleString("ru-RU")} MDL
                     </p>
                   </div>
+
                   <div className={styles.itemQty}>
                     <button onClick={() => removeFromCart(item.id)}>−</button>
                     <span>{item.quantity}</span>
@@ -66,15 +82,27 @@ export default function CartPage() {
 
             <div className={styles.summary}>
               <h2 className={styles.summaryTitle}>Итого</h2>
+
               <div className={styles.summaryRow}>
                 <span>Товаров:</span>
-                <span>{cart.reduce((s: number, i: any) => s + i.quantity, 0)} шт.</span>
+                <span>
+                  {cart.reduce((s: number, i: any) => s + i.quantity, 0)} шт.
+                </span>
               </div>
+
               <div className={styles.summaryRow}>
                 <span>Сумма:</span>
-                <span className={styles.summaryTotal}>{total.toLocaleString("ru-RU")} MDL</span>
+                <span className={styles.summaryTotal}>
+                  {total.toLocaleString("ru-RU")} MDL
+                </span>
               </div>
-              <button className={styles.checkoutBtn}>Оформить заказ →</button>
+
+              <button
+  className={styles.checkoutBtn}
+  onClick={() => navigate("/checkout")}
+>
+  Оформить заказ →
+</button>
             </div>
           </div>
         )}

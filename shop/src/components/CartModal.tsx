@@ -10,22 +10,50 @@ interface CartModalProps {
   onAdd: (product: Product) => void;
 }
 
-export const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose, cart, onRemove, onAdd }) => {
+export const CartModal: React.FC<CartModalProps> = ({
+  isOpen,
+  onClose,
+  cart,
+  onRemove,
+  onAdd,
+}) => {
   useEffect(() => {
     if (isOpen) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "";
-    return () => { document.body.style.overflow = ""; };
+
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [isOpen]);
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
   if (!isOpen) return null;
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
+  const handleCheckout = () => {
+    const token = localStorage.getItem("token");
+
+    onClose();
+
+    if (!token) {
+      window.location.href = "/login";
+      return;
+    }
+
+    window.location.href = "/checkout";
+  };
 
   return (
     <div className={styles.overlay} onClick={onClose}>
@@ -34,9 +62,14 @@ export const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose, cart, onR
           <div className={styles.headerLeft}>
             <span className={styles.headerIcon}>⊞</span>
             <h2 className={styles.title}>Корзина</h2>
-            <span className={styles.countBadge}>{cart.reduce((s, i) => s + i.quantity, 0)}</span>
+            <span className={styles.countBadge}>
+              {cart.reduce((s, i) => s + i.quantity, 0)}
+            </span>
           </div>
-          <button className={styles.closeBtn} onClick={onClose}>✕</button>
+
+          <button className={styles.closeBtn} onClick={onClose}>
+            ✕
+          </button>
         </div>
 
         <div className={styles.body}>
@@ -53,14 +86,30 @@ export const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose, cart, onR
                   <div className={styles.itemImg}>
                     <img src={item.image} alt={item.title} />
                   </div>
+
                   <div className={styles.itemInfo}>
                     <p className={styles.itemTitle}>{item.title}</p>
-                    <p className={styles.itemPrice}>{(item.price * item.quantity).toLocaleString("ro-MD")} MDL</p>
+                    <p className={styles.itemPrice}>
+                      {(item.price * item.quantity).toLocaleString("ro-MD")} MDL
+                    </p>
                   </div>
+
                   <div className={styles.itemQty}>
-                    <button className={styles.qtyBtn} onClick={() => onRemove(item.id)}>−</button>
+                    <button
+                      className={styles.qtyBtn}
+                      onClick={() => onRemove(item.id)}
+                    >
+                      −
+                    </button>
+
                     <span className={styles.qtyNum}>{item.quantity}</span>
-                    <button className={styles.qtyBtn} onClick={() => onAdd(item)}>+</button>
+
+                    <button
+                      className={styles.qtyBtn}
+                      onClick={() => onAdd(item)}
+                    >
+                      +
+                    </button>
                   </div>
                 </li>
               ))}
@@ -72,9 +121,14 @@ export const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose, cart, onR
           <div className={styles.footer}>
             <div className={styles.totalRow}>
               <span>Итого:</span>
-              <span className={styles.totalPrice}>{total.toLocaleString("ro-MD")} MDL</span>
+              <span className={styles.totalPrice}>
+                {total.toLocaleString("ro-MD")} MDL
+              </span>
             </div>
-            <button className={styles.checkoutBtn}>Оформить заказ →</button>
+
+            <button className={styles.checkoutBtn} onClick={handleCheckout}>
+              Оформить заказ →
+            </button>
           </div>
         )}
       </div>

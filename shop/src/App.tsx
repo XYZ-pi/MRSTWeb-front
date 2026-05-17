@@ -6,6 +6,9 @@ import ProductPage from "./pages/ProductPage";
 import AboutPage from "./pages/AboutPage";
 import DeliveryPage from "./pages/DeliveryPage";
 import LoginPage from "./pages/LoginPage";
+import ProfilePage from "./pages/ProfilePage";
+import AdminPage from "./pages/AdminPage";
+import CheckoutPage from "./pages/CheckoutPage";
 
 export default function App() {
   return (
@@ -17,6 +20,9 @@ export default function App() {
       <Route path="/about" element={<AboutPage />} />
       <Route path="/delivery" element={<DeliveryPage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
+<Route path="/admin" element={<AdminPage />} />
+<Route path="/checkout" element={<CheckoutPage />} />
     </Routes>
   );
 }
