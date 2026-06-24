@@ -213,3 +213,71 @@
   .inner { padding: 0 1rem; }
   .themeBtn { display: flex; }
 }
+
+.userBtn {
+  padding: 0;
+  overflow: hidden;
+}
+
+.userAvatar {
+  width: 32px;
+  height: 32px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.userDropdown {
+  right: 0;
+  left: auto;
+  min-width: 200px;
+}
+
+.userInfo {
+  padding: 10px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.userName {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.userRole {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.dropdownDivider {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+}
+
+.dropdownItemDanger {
+  color: var(--accent2) !important;
+}
+.dropdownItemDanger:hover {
+  background: rgba(255,101,132,0.1) !important;
+}
+
+/* В файле Header.module.css */
+.header {
+  position: fixed; /* или sticky */
+  top: 0;
+  width: 100%;
+  z-index: 1000; /* Добавь это */
+  /* остальные стили... */
+}

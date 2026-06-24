@@ -1,327 +1,122 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import { api } from "../api/api";
 
 export default function AdminPage() {
-  const navigate = useNavigate();
-  const [tab, setTab] = useState<"products" | "users">("products");
-
-  // Products state
   const [products, setProducts] = useState<any[]>([]);
-  const [editingProduct, setEditingProduct] = useState<any | null>(null);
-  const [newProduct, setNewProduct] = useState({
-    name: "", description: "", price: 0,
-    category: "", image: "", ratingRate: 0, ratingCount: 0, badge: ""
-  });
-  const [showAddProduct, setShowAddProduct] = useState(false);
-
-  // Users state
   const [users, setUsers] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState<"products" | "users">("products");
+  const [isAdding, setIsAdding] = useState(false);
+  const [newProd, setNewProd] = useState({ name: "", price: 0 });
 
-  // Auth check
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) { navigate("/login"); return; }
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    const role = payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-    if (role !== "Admin") { navigate("/profile"); return; }
-
-    loadProducts();
-    loadUsers();
-  }, []);
-
-  const loadProducts = async () => {
+  const loadData = async () => {
     try {
-      const data = await api.getAllProducts();
-      setProducts(data);
-    } catch (e) { console.error(e); }
+      const p = await api.getAllProducts();
+      setProducts(p);
+      const u = await api.getAllUsers();
+      setUsers(u);
+    } catch (e) { console.error("Ошибка загрузки данных:", e); }
   };
 
-  const loadUsers = async () => {
-    try {
-      const data = await api.getAllUsers();
-      setUsers(data);
-    } catch (e) { console.error(e); }
+  useEffect(() => { loadData(); }, []);
+
+  const getRoleLabel = (role: any) => {
+    if (role === 30) return "Admin";
+    if (role === 20) return "Manager";
+    return "User";
   };
 
-  const handleDeleteProduct = async (id: number) => {
-    if (!confirm("Удалить товар?")) return;
+  const handleDeleteUser = async (id: number) => {
     try {
-      await api.deleteProduct(id);
-      setProducts(products.filter(p => p.id !== id));
-    } catch (e) { alert("Ошибка удаления"); }
-  };
-
-  const handleUpdateProduct = async () => {
-    if (!editingProduct) return;
-    try {
-      await api.updateProduct(editingProduct.id, {
-        name: editingProduct.name,
-        description: editingProduct.description,
-        price: editingProduct.price,
-        category: editingProduct.category,
-        image: editingProduct.image,
-        ratingRate: editingProduct.ratingRate,
-        ratingCount: editingProduct.ratingCount,
-        badge: editingProduct.badge,
-      });
-      setEditingProduct(null);
-      loadProducts();
-    } catch (e) { alert("Ошибка обновления"); }
+      await api.deleteUser(id);
+      alert("Пользователь успешно удален");
+      loadData();
+    } catch (error) {
+      console.error(error);
+      alert("Не удалось удалить пользователя");
+    }
   };
 
   const handleAddProduct = async () => {
     try {
-      await api.createProduct(newProduct);
-      setNewProduct({ name: "", description: "", price: 0, category: "", image: "", ratingRate: 0, ratingCount: 0, badge: "" });
-      setShowAddProduct(false);
-      loadProducts();
-    } catch (e) { alert("Ошибка создания"); }
-  };
-
-  const handleDeleteUser = async (id: number) => {
-    if (!confirm("Удалить пользователя?")) return;
-    try {
-      await api.deleteUser(id);
-      setUsers(users.filter(u => u.id !== id));
-    } catch (e) { alert("Ошибка удаления"); }
+      // Добавляем поля, которые требует ваш сервер (Category/Description)
+      await api.createProduct({
+        ...newProd,
+        category: "Default",
+        description: "Default"
+      });
+      setIsAdding(false);
+      setNewProd({ name: "", price: 0 });
+      loadData();
+    } catch (e: any) { alert("Ошибка при создании товара: " + e.message); }
   };
 
   return (
-    <div style={{ padding: "40px", maxWidth: "1200px", margin: "0 auto", fontFamily: "sans-serif" }}>
-      <h1 style={{ marginBottom: "24px" }}>🛠 Панель администратора</h1>
-
-      {/* Tabs */}
-      <div style={{ display: "flex", gap: "12px", marginBottom: "32px" }}>
-        <button onClick={() => setTab("products")} style={{
-          padding: "10px 24px", borderRadius: "8px", border: "none",
-          background: tab === "products" ? "#000" : "#eee",
-          color: tab === "products" ? "#fff" : "#000",
-          cursor: "pointer", fontWeight: 700
-        }}>
-          Товары
-        </button>
-        <button onClick={() => setTab("users")} style={{
-          padding: "10px 24px", borderRadius: "8px", border: "none",
-          background: tab === "users" ? "#000" : "#eee",
-          color: tab === "users" ? "#fff" : "#000",
-          cursor: "pointer", fontWeight: 700
-        }}>
-          Пользователи
-        </button>
+    <div style={{ padding: "40px", backgroundColor: "#F4F7FE", minHeight: "100vh", fontFamily: "sans-serif" }}>
+      <h1 style={{ marginBottom: "30px", color: "#2B3674" }}>Панель администратора</h1>
+      
+      <div style={{ marginBottom: "30px", display: "flex", gap: "10px" }}>
+        <button onClick={() => setActiveTab("products")} style={btnStyle(activeTab === "products")}>Товары</button>
+        <button onClick={() => setActiveTab("users")} style={btnStyle(activeTab === "users")}>Пользователи</button>
+        {activeTab === "products" && (
+          <button onClick={() => setIsAdding(!isAdding)} style={{ ...btnStyle(false), backgroundColor: "#4318FF", color: "white" }}>
+            {isAdding ? "Отмена" : "+ Добавить"}
+          </button>
+        )}
       </div>
 
-      {/* PRODUCTS TAB */}
-      {tab === "products" && (
-        <div>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "16px" }}>
-            <h2>Товары ({products.length})</h2>
-            <button onClick={() => setShowAddProduct(!showAddProduct)} style={{
-              padding: "10px 20px", background: "#000", color: "#fff",
-              border: "none", borderRadius: "8px", cursor: "pointer"
-            }}>
-              + Добавить товар
-            </button>
-          </div>
-
-          {/* Add product form */}
-          {showAddProduct && (
-            <div style={{ background: "#f5f5f5", padding: "20px", borderRadius: "12px", marginBottom: "24px" }}>
-              <h3>Новый товар</h3>
-              {[
-                { label: "Название", key: "name" },
-                { label: "Описание", key: "description" },
-                { label: "Категория", key: "category" },
-                { label: "Картинка (путь)", key: "image" },
-                { label: "Бейдж", key: "badge" },
-              ].map(({ label, key }) => (
-                <div key={key} style={{ marginBottom: "8px" }}>
-                  <label style={{ display: "block", fontSize: "13px", marginBottom: "4px" }}>{label}</label>
-                  <input
-                    value={(newProduct as any)[key]}
-                    onChange={e => setNewProduct({ ...newProduct, [key]: e.target.value })}
-                    style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc" }}
-                  />
-                </div>
-              ))}
-              <div style={{ display: "flex", gap: "12px" }}>
-                <div style={{ flex: 1 }}>
-                  <label style={{ display: "block", fontSize: "13px", marginBottom: "4px" }}>Цена</label>
-                  <input type="number" value={newProduct.price}
-                    onChange={e => setNewProduct({ ...newProduct, price: Number(e.target.value) })}
-                    style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc" }}
-                  />
-                </div>
-                <div style={{ flex: 1 }}>
-                  <label style={{ display: "block", fontSize: "13px", marginBottom: "4px" }}>Рейтинг</label>
-                  <input type="number" step="0.1" value={newProduct.ratingRate}
-                    onChange={e => setNewProduct({ ...newProduct, ratingRate: Number(e.target.value) })}
-                    style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc" }}
-                  />
-                </div>
-              </div>
-              <div style={{ marginTop: "12px", display: "flex", gap: "8px" }}>
-                <button onClick={handleAddProduct} style={{
-                  padding: "10px 20px", background: "#000", color: "#fff",
-                  border: "none", borderRadius: "8px", cursor: "pointer"
-                }}>Сохранить</button>
-                <button onClick={() => setShowAddProduct(false)} style={{
-                  padding: "10px 20px", background: "#eee",
-                  border: "none", borderRadius: "8px", cursor: "pointer"
-                }}>Отмена</button>
-              </div>
-            </div>
-          )}
-
-          {/* Products table */}
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr style={{ background: "#f5f5f5" }}>
-                <th style={th}>ID</th>
-                <th style={th}>Название</th>
-                <th style={th}>Цена</th>
-                <th style={th}>Категория</th>
-                <th style={th}>Действия</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map(p => (
-                <tr key={p.id} style={{ borderBottom: "1px solid #eee" }}>
-                  <td style={td}>{p.id}</td>
-                  <td style={td}>{p.name}</td>
-                  <td style={td}>{p.price} MDL</td>
-                  <td style={td}>{p.category}</td>
-                  <td style={td}>
-                    <button onClick={() => setEditingProduct(p)} style={editBtn}>✏️ Изменить</button>
-                    <button onClick={() => handleDeleteProduct(p.id)} style={deleteBtn}>🗑 Удалить</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          {/* Edit modal */}
-          {editingProduct && (
-            <div style={{
-              position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
-              background: "rgba(0,0,0,0.5)", display: "flex",
-              alignItems: "center", justifyContent: "center", zIndex: 1000
-            }}>
-              <div style={{
-                background: "#fff", padding: "32px", borderRadius: "16px",
-                width: "500px", maxHeight: "80vh", overflowY: "auto"
-              }}>
-                <h3>Редактировать товар</h3>
-                {[
-                  { label: "Название", key: "name" },
-                  { label: "Описание", key: "description" },
-                  { label: "Категория", key: "category" },
-                  { label: "Картинка", key: "image" },
-                  { label: "Бейдж", key: "badge" },
-                ].map(({ label, key }) => (
-                  <div key={key} style={{ marginBottom: "8px" }}>
-                    <label style={{ display: "block", fontSize: "13px", marginBottom: "4px" }}>{label}</label>
-                    <input
-                      value={editingProduct[key] ?? ""}
-                      onChange={e => setEditingProduct({ ...editingProduct, [key]: e.target.value })}
-                      style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc" }}
-                    />
-                  </div>
-                ))}
-                <div style={{ display: "flex", gap: "12px" }}>
-                  <div style={{ flex: 1 }}>
-                    <label style={{ display: "block", fontSize: "13px", marginBottom: "4px" }}>Цена</label>
-                    <input type="number" value={editingProduct.price}
-                      onChange={e => setEditingProduct({ ...editingProduct, price: Number(e.target.value) })}
-                      style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc" }}
-                    />
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <label style={{ display: "block", fontSize: "13px", marginBottom: "4px" }}>Рейтинг</label>
-                    <input type="number" step="0.1" value={editingProduct.ratingRate}
-                      onChange={e => setEditingProduct({ ...editingProduct, ratingRate: Number(e.target.value) })}
-                      style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc" }}
-                    />
-                  </div>
-                </div>
-                <div style={{ marginTop: "16px", display: "flex", gap: "8px" }}>
-                  <button onClick={handleUpdateProduct} style={{
-                    padding: "10px 20px", background: "#000", color: "#fff",
-                    border: "none", borderRadius: "8px", cursor: "pointer"
-                  }}>Сохранить</button>
-                  <button onClick={() => setEditingProduct(null)} style={{
-                    padding: "10px 20px", background: "#eee",
-                    border: "none", borderRadius: "8px", cursor: "pointer"
-                  }}>Отмена</button>
-                </div>
-              </div>
-            </div>
-          )}
+      {isAdding && (
+        <div style={{ background: "white", padding: "20px", borderRadius: "20px", marginBottom: "20px", display: "flex", gap: "15px", boxShadow: "0px 18px 40px rgba(112, 144, 176, 0.12)" }}>
+          <input placeholder="Название" value={newProd.name} onChange={(e) => setNewProd({...newProd, name: e.target.value})} style={inputStyle} />
+          <input type="number" placeholder="Цена" value={newProd.price} onChange={(e) => setNewProd({...newProd, price: Number(e.target.value)})} style={inputStyle} />
+          <button onClick={handleAddProduct} style={{ ...btnStyle(true), backgroundColor: "#05CD99", color: "white" }}>Сохранить</button>
         </div>
       )}
 
-      {/* USERS TAB */}
-      {tab === "users" && (
-        <div>
-          <h2 style={{ marginBottom: "16px" }}>Пользователи ({users.length})</h2>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr style={{ background: "#f5f5f5" }}>
-                <th style={th}>ID</th>
-                <th style={th}>Имя</th>
-                <th style={th}>Email</th>
-                <th style={th}>Роль</th>
-                <th style={th}>Действия</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map(u => (
-                <tr key={u.id} style={{ borderBottom: "1px solid #eee" }}>
-                  <td style={td}>{u.id}</td>
-                  <td style={td}>{u.userName}</td>
-                  <td style={td}>{u.email}</td>
-                  <td style={td}>
-                    <span style={{
-                      padding: "4px 10px", borderRadius: "6px",
-                      background: u.role === 30 ? "#000" : u.role === 20 ? "#555" : "#eee",
-                      color: u.role === 30 || u.role === 20 ? "#fff" : "#000",
-                      fontSize: "12px"
-                    }}>
-                      {u.role === 30 ? "Admin" : u.role === 20 ? "Manager" : "User"}
-                    </span>
-                  </td>
-                  <td style={td}>
-                    <button onClick={() => handleDeleteUser(u.id)} style={deleteBtn}>
-                      🗑 Удалить
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+      <div style={{ background: "white", padding: "20px", borderRadius: "20px", boxShadow: "0px 18px 40px rgba(112, 144, 176, 0.12)" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <thead>
+            <tr style={{ color: "#A3AED0", textAlign: "left" }}>
+              <th style={{ padding: "15px" }}>{activeTab === "products" ? "Название" : "Имя пользователя"}</th>
+              <th style={{ padding: "15px" }}>{activeTab === "products" ? "Цена" : "Email"}</th>
+              {activeTab === "users" && <th style={{ padding: "15px" }}>Роль</th>}
+              <th style={{ padding: "15px", textAlign: "right" }}>Действие</th>
+            </tr>
+          </thead>
+          <tbody>
+            {activeTab === "products" 
+              ? products.map(p => (
+                  <tr key={p.id} style={{ borderTop: "1px solid #F4F7FE" }}>
+                    <td style={{ padding: "20px", fontWeight: "600" }}>{p.name}</td>
+                    <td style={{ padding: "20px" }}>{p.price} MDL</td>
+                    <td style={{ padding: "20px", textAlign: "right" }}><button onClick={() => api.deleteProduct(p.id).then(loadData)} style={delBtn}>Удалить</button></td>
+                  </tr>
+                ))
+              : users.map(u => (
+                  <tr key={u.id} style={{ borderTop: "1px solid #F4F7FE" }}>
+                    <td style={{ padding: "20px", fontWeight: "600" }}>{u.username || u.userName || u.name}</td>
+                    <td style={{ padding: "20px" }}>{u.email}</td>
+                    <td style={{ padding: "20px", color: "#4318FF", fontWeight: "bold" }}>{getRoleLabel(u.role)}</td>
+                    <td style={{ padding: "20px", textAlign: "right" }}><button onClick={() => handleDeleteUser(u.id)} style={delBtn}>Бан</button></td>
+                  </tr>
+                ))
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
 
-const th: React.CSSProperties = {
-  padding: "12px 16px", textAlign: "left",
-  fontWeight: 700, fontSize: "13px"
-};
+const btnStyle = (active: boolean) => ({
+  padding: "12px 24px",
+  borderRadius: "15px",
+  border: "none",
+  backgroundColor: active ? "#4318FF" : "#FFFFFF",
+  color: active ? "white" : "#A3AED0",
+  fontWeight: "bold",
+  cursor: "pointer",
+  transition: "0.3s"
+});
 
-const td: React.CSSProperties = {
-  padding: "12px 16px", fontSize: "14px"
-};
-
-const editBtn: React.CSSProperties = {
-  padding: "6px 12px", marginRight: "8px",
-  background: "#f5f5f5", border: "1px solid #ddd",
-  borderRadius: "6px", cursor: "pointer"
-};
-
-const deleteBtn: React.CSSProperties = {
-  padding: "6px 12px",
-  background: "#fff0f0", border: "1px solid #ffccc7",
-  color: "#cc0000", borderRadius: "6px", cursor: "pointer"
-};
+const inputStyle = { padding: "12px", borderRadius: "10px", border: "1px solid #E0E5F2", flex: 1 };
+const delBtn = { border: "none", background: "#FFEBEB", color: "#EE5D5D", padding: "8px 16px", borderRadius: "10px", cursor: "pointer" };

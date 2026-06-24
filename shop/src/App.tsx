@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout"; // Импортируем нашу оболочку
 import HomePage from "./pages/HomePage";
 import CartPage from "./pages/CartPage";
 import FavoritesPage from "./pages/FavoritesPage";
@@ -13,16 +14,19 @@ import CheckoutPage from "./pages/CheckoutPage";
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/cart" element={<CartPage />} />
-      <Route path="/favorites" element={<FavoritesPage />} />
-      <Route path="/product/:id" element={<ProductPage />} />
-      <Route path="/about" element={<AboutPage />} />
-      <Route path="/delivery" element={<DeliveryPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/profile" element={<ProfilePage />} />
-<Route path="/admin" element={<AdminPage />} />
-<Route path="/checkout" element={<CheckoutPage />} />
+      {/* Главный роут-родитель со сквозным дизайном */}
+      <Route element={<Layout />}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/favorites" element={<FavoritesPage />} />
+        <Route path="/product/:id" element={<ProductPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/delivery" element={<DeliveryPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+      </Route>
     </Routes>
   );
 }

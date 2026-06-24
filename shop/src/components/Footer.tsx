@@ -1,7 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"; // 1. Импортируем хук
 import styles from "./Footer.module.css";
 
 export const Footer: React.FC = () => {
+  const navigate = useNavigate(); // 2. Инициализируем навигацию
+
   return (
     <footer className={styles.footer}>
       <div className={styles.inner}>
@@ -24,6 +27,7 @@ export const Footer: React.FC = () => {
           <div className={styles.links}>
             <h4>Каталог</h4>
             <ul>
+              {/* Можно оставить как есть, если это просто списки категорий */}
               <li>Одежда</li>
               <li>Обувь</li>
               <li>Защита</li>
@@ -35,10 +39,11 @@ export const Footer: React.FC = () => {
           <div className={styles.links}>
             <h4>Магазин</h4>
             <ul>
-              <li>О нас</li>
-              <li>Доставка и оплата</li>
-              <li>Возврат</li>
-              <li>Контакты</li>
+              {/* 3. Добавляем кликабельность через onClick */}
+              <li onClick={() => navigate("/about")} style={{ cursor: "pointer" }}>О нас</li>
+              <li onClick={() => navigate("/delivery")} style={{ cursor: "pointer" }}>Доставка и оплата</li>
+              <li onClick={() => navigate("/favorites")} style={{ cursor: "pointer" }}>Избранное</li>
+              <li onClick={() => navigate("/cart")} style={{ cursor: "pointer" }}>Корзина</li>
             </ul>
           </div>
 

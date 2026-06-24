@@ -1,162 +1,104 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Header } from "../components/Header";
-import { Footer } from "../components/Footer";
 import { useShop } from "../context/ShopContext";
 import { api } from "../api/api";
 import "../styles/global.css";
 
 export default function LoginPage() {
-  const { totalItems, totalLikes, theme, setTheme } = useShop();
+  const { setCurrentUser } = useShop();
   const navigate = useNavigate();
 
   const [mode, setMode] = useState<"login" | "register">("login");
-
-  // login = userName (или email, но backend ждёт userName)
   const [userName, setUserName] = useState("");
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
     setError("");
-    setSuccess("");
+    if (!userName.trim()) { setError("Введите имя пользователя"); return; }
+    if (!password.trim()) { setError("Введите пароль"); return; }
+    if (mode === "register" && !email.trim()) { setError("Введите email"); return; }
 
+    setLoading(true);
     try {
-      let data;
+      const data = mode === "login"
+        ? await api.login(userName, password)
+        : await api.register(userName, email, password);
 
-      // ✅ LOGIN FIX (главное исправление)
-      if (mode === "login") {
-        data = await api.login(userName, password);
-      } else {
-        data = await api.register(userName, email, password);
-      }
+      if (!data.token) throw new Error("Сервер не вернул токен");
 
       localStorage.setItem("token", data.token);
 
       const payload = JSON.parse(atob(data.token.split(".")[1]));
+      const role = payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || payload.role || "";
+      const uName = payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] || payload.unique_name || payload.name || "";
+      const id = Number(payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] || payload.sub || 0);
 
-      const role =
-        payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ||
-        payload.role;
+      setCurrentUser({ id, userName: uName, role });
+      navigate(role === "Admin" || role === "30" ? "/admin" : "/profile");
 
-      setSuccess("Успешно!");
-
-      setTimeout(() => {
-        if (role === "Admin") {
-          navigate("/admin");
-        } else {
-          navigate("/profile");
-        }
-      }, 800);
     } catch (e: any) {
       setError(e.message || "Ошибка входа");
+    } finally {
+      setLoading(false);
     }
   };
 
+  const inputStyle: React.CSSProperties = {
+    width: "100%", padding: "12px 16px", background: "var(--surface2)",
+    border: "1px solid var(--border)", borderRadius: "10px", color: "var(--text)",
+    fontSize: "15px", outline: "none", boxSizing: "border-box", marginBottom: "12px",
+  };
+
   return (
-    <div>
-      <Header
-        cartCount={totalItems}
-        likeCount={totalLikes}
-        activeSection=""
-        onNavigate={() => navigate("/")}
-        onOpenCart={() => navigate("/cart")}
-        onOpenFavorites={() => navigate("/favorites")}
-        theme={theme}
-        onToggleTheme={() => setTheme(theme === "dark" ? "light" : "dark")}
-      />
+    <main style={{ minHeight: "calc(100vh - 160px)", display: "flex", alignItems: "center", justifyContent: "center", padding: "2rem" }}>
+      <div style={{ width: "100%", maxWidth: "420px", background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: "20px", padding: "2.5rem", boxShadow: "0 20px 60px rgba(0,0,0,0.08)" }}>
 
-      <div style={container}>
-        <div style={card}>
-          <div style={tabs}>
-            <button style={tab(mode === "login")} onClick={() => setMode("login")}>
-              Вход
+        <div style={{ display: "flex", background: "var(--surface2)", borderRadius: "10px", padding: "4px", marginBottom: "2rem" }}>
+          {(["login", "register"] as const).map((m) => (
+            <button key={m} onClick={() => { setMode(m); setError(""); }}
+              style={{
+                flex: 1, padding: "9px", background: mode === m ? "var(--accent)" : "none",
+                color: mode === m ? "#fff" : "var(--text-muted)", border: "none",
+                borderRadius: "8px", fontWeight: 700, cursor: "pointer", transition: "all 0.2s"
+              }}
+            >
+              {m === "login" ? "Войти" : "Регистрация"}
             </button>
-            <button style={tab(mode === "register")} onClick={() => setMode("register")}>
-              Регистрация
-            </button>
-          </div>
-
-          {/* LOGIN INPUT (userName) */}
-          <input
-            placeholder="UserName"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            style={input}
-          />
-
-          {/* REGISTER ONLY */}
-          {mode === "register" && (
-            <input
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              style={input}
-            />
-          )}
-
-          <input
-            type="password"
-            placeholder="Пароль"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={input}
-          />
-
-          {error && <p style={{ color: "red" }}>{error}</p>}
-          {success && <p style={{ color: "green" }}>{success}</p>}
-
-          <button onClick={handleSubmit} style={btn}>
-            {mode === "login" ? "Войти" : "Зарегистрироваться"}
-          </button>
+          ))}
         </div>
-      </div>
 
-      <Footer />
-    </div>
+        <h2 style={{ fontSize: "1.6rem", marginBottom: "1rem" }}>
+          {mode === "login" ? "Добро пожаловать!" : "Создать аккаунт"}
+        </h2>
+
+        <label style={{ display: "block", marginBottom: "6px", fontSize: "14px" }}>Имя пользователя</label>
+        <input placeholder="UserName" value={userName} onChange={(e) => setUserName(e.target.value)} style={inputStyle} />
+
+        {mode === "register" && (
+          <>
+            <label style={{ display: "block", marginBottom: "6px", fontSize: "14px" }}>Email</label>
+            <input placeholder="your@email.com" value={email} onChange={(e) => setEmail(e.target.value)} style={inputStyle} />
+          </>
+        )}
+
+        <label style={{ display: "block", marginBottom: "6px", fontSize: "14px" }}>Пароль</label>
+        <input
+          type="password" placeholder="••••••••" value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+          style={inputStyle}
+        />
+
+        {error && <div style={{ color: "red", fontSize: "13px", marginBottom: "10px" }}>⚠ {error}</div>}
+
+        <button onClick={handleSubmit} disabled={loading}
+          style={{ width: "100%", background: "var(--accent)", color: "#fff", border: "none", padding: "14px", borderRadius: "10px", cursor: "pointer", fontWeight: "bold" }}>
+          {loading ? "Загрузка..." : mode === "login" ? "Войти" : "Создать аккаунт"}
+        </button>
+      </div>
+    </main>
   );
 }
-
-// styles
-const container: React.CSSProperties = {
-  minHeight: "100vh",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-};
-
-const card: React.CSSProperties = {
-  width: 360,
-  padding: 20,
-  borderRadius: 12,
-  border: "1px solid #ccc",
-};
-
-const input: React.CSSProperties = {
-  width: "100%",
-  padding: 10,
-  marginBottom: 10,
-};
-
-const btn: React.CSSProperties = {
-  width: "100%",
-  padding: 10,
-  background: "black",
-  color: "white",
-};
-
-const tabs = {
-  display: "flex",
-  marginBottom: 10,
-};
-
-const tab = (active: boolean): React.CSSProperties => ({
-  flex: 1,
-  padding: 10,
-  background: active ? "black" : "#eee",
-  color: active ? "white" : "black",
-});

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useShop } from "../context/ShopContext";
 import styles from "./Header.module.css";
 
 interface HeaderProps {
@@ -28,14 +29,21 @@ export const Header: React.FC<HeaderProps> = ({
   theme, onToggleTheme,
 }) => {
   const [catalogOpen, setCatalogOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const catalogRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const { currentUser, logout } = useShop();
 
+  // Закрыть дропдауны при клике вне
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (catalogRef.current && !catalogRef.current.contains(e.target as Node)) {
         setCatalogOpen(false);
+      }
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setUserMenuOpen(false);
       }
     };
     document.addEventListener("mousedown", handler);
@@ -49,6 +57,12 @@ export const Header: React.FC<HeaderProps> = ({
       window.dispatchEvent(new CustomEvent("setCategory", { detail: id }));
       onNavigate("catalog");
     }, 50);
+  };
+
+  const handleLogout = () => {
+    logout();
+    setUserMenuOpen(false);
+    navigate("/");
   };
 
   const isActive = (path: string) => location.pathname === path;
@@ -72,8 +86,6 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Навигация */}
         <nav className={styles.nav}>
-
-          {/* Каталог с дропдауном */}
           <div className={styles.catalogWrap} ref={catalogRef}>
             <button
               className={`${styles.navLink} ${isActive("/") ? styles.active : ""} ${catalogOpen ? styles.active : ""}`}
@@ -122,13 +134,50 @@ export const Header: React.FC<HeaderProps> = ({
             {theme === "dark" ? "☀" : "☾"}
           </button>
 
-          {/* Войти */}
-          <button className={styles.counterBtn} onClick={() => navigate("/login")} title="Войти">
-            <svg className={styles.icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
-            </svg>
-          </button>
+          {/* Пользователь — дропдаун если залогинен, иначе переход на /login */}
+          {currentUser ? (
+            <div className={styles.catalogWrap} ref={userMenuRef}>
+              <button
+                className={`${styles.counterBtn} ${styles.userBtn}`}
+                onClick={() => setUserMenuOpen(v => !v)}
+                title={currentUser.userName}
+              >
+                <span className={styles.userAvatar}>
+                  {currentUser.userName.charAt(0).toUpperCase()}
+                </span>
+              </button>
+
+              {userMenuOpen && (
+                <div className={`${styles.dropdown} ${styles.userDropdown}`}>
+                  <div className={styles.dropdownArrow} />
+                  <div className={styles.userInfo}>
+                    <span className={styles.userName}>{currentUser.userName}</span>
+                    <span className={styles.userRole}>{currentUser.role}</span>
+                  </div>
+                  <div className={styles.dropdownDivider} />
+                  <button className={styles.dropdownItem} onClick={() => { navigate("/profile"); setUserMenuOpen(false); }}>
+                    Личный кабинет
+                  </button>
+                  {(currentUser.role === "Admin" || currentUser.role === "30") && (
+                    <button className={styles.dropdownItem} onClick={() => { navigate("/admin"); setUserMenuOpen(false); }}>
+                      Панель администратора
+                    </button>
+                  )}
+                  <div className={styles.dropdownDivider} />
+                  <button className={`${styles.dropdownItem} ${styles.dropdownItemDanger}`} onClick={handleLogout}>
+                    Выйти
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <button className={styles.counterBtn} onClick={() => navigate("/login")} title="Войти">
+              <svg className={styles.icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </button>
+          )}
 
           {/* Избранное */}
           <button className={styles.counterBtn} onClick={onOpenFavorites} title="Избранное">

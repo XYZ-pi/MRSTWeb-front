@@ -1,7 +1,9 @@
 .main {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 100px 2rem 4rem;
+  /* Убираем 100px сверху, так как они теперь добавляются через Layout.tsx */
+  /* Оставляем 2rem (32px) для небольшого отступа от хэдера */
+  padding: 2rem 2rem 4rem; 
   min-height: 80vh;
 }
 

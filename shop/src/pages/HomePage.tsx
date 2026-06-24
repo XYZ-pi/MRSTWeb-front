@@ -1,12 +1,10 @@
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Header } from "../components/Header";
 import { Hero } from "../components/Hero";
 import { SearchBar } from "../components/SearchBar";
 import { Catalog } from "../components/Catalog";
 import { About } from "../components/About";
-import { Footer } from "../components/Footer";
 import { ProductModal } from "../components/ProductModal";
 
 import { useShop } from "../context/ShopContext";
@@ -18,16 +16,14 @@ const ITEMS_PER_PAGE = 6;
 export default function HomePage() {
   const {
     products, loading, error,
-    addToCart, totalItems, isInCart,
-    toggleLike, isLiked, totalLikes,
-    theme, setTheme,
+    addToCart, isInCart,
+    toggleLike, isLiked,
   } = useShop();
 
   const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
-  const [activeSection, setActiveSection] = useState("hero");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [priceMax, setPriceMax] = useState(15000);
   const [sortBy, setSortBy] = useState<"default" | "price_asc" | "price_desc" | "rating">("default");
@@ -35,17 +31,6 @@ export default function HomePage() {
 
   const catalogRef = useRef<HTMLElement>(null);
   const aboutRef = useRef<HTMLElement>(null);
-
-  // Слушаем выбор категории из дропдауна
-  useEffect(() => {
-    const handler = (e: Event) => {
-      const cat = (e as CustomEvent).detail as string;
-      setActiveCategory(cat);
-      setCurrentPage(1);
-    };
-    window.addEventListener("setCategory", handler);
-    return () => window.removeEventListener("setCategory", handler);
-  }, []);
 
   const filteredProducts = useMemo(() => {
     let result = products.filter((p) => {
@@ -68,62 +53,28 @@ export default function HomePage() {
     currentPage * ITEMS_PER_PAGE
   );
 
-  const handleNavigate = (section: string) => {
-    setActiveSection(section);
-    if (section === "catalog") catalogRef.current?.scrollIntoView({ behavior: "smooth" });
-    if (section === "about") aboutRef.current?.scrollIntoView({ behavior: "smooth" });
-    if (section === "hero") window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
     <div>
-      <Header
-        cartCount={totalItems}
-        likeCount={totalLikes}
-        activeSection={activeSection}
-        onNavigate={handleNavigate}
-        onOpenCart={() => navigate("/cart")}
-        onOpenFavorites={() => navigate("/favorites")}
-        theme={theme}
-        onToggleTheme={() => setTheme(theme === "dark" ? "light" : "dark")}
-      />
-
-      <Hero onCatalogClick={() => handleNavigate("catalog")} />
+      {/* Навигация теперь осуществляется через Layout, поэтому Header удален отсюда */}
+      
+      <Hero onCatalogClick={() => catalogRef.current?.scrollIntoView({ behavior: "smooth" })} />
 
       <main>
-        <section ref={catalogRef} style={{ paddingTop: "5rem" }}>
-
-          {/* Заголовок каталога */}
+        {/* scroll-margin-top позволяет корректно скроллить к секции с учетом высоты хэдера */}
+        <section ref={catalogRef} style={{ paddingTop: "3rem", scrollMarginTop: "100px" }}>
+          
           <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 2rem 1.5rem" }}>
-            <span style={{
-              color: "var(--accent)", fontSize: "13px", fontWeight: 600,
-              letterSpacing: "0.1em", textTransform: "uppercase",
-              display: "block", marginBottom: "0.5rem",
-            }}>
+            <span style={{ color: "var(--accent)", fontSize: "13px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", display: "block", marginBottom: "0.5rem" }}>
               ◈ Каталог
             </span>
-            <h2 style={{
-              fontFamily: "'Syne', sans-serif",
-              fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
-              fontWeight: 800, color: "var(--text)",
-            }}>
+            <h2 style={{ fontFamily: "'Syne', sans-serif", fontSize: "clamp(1.75rem, 4vw, 2.5rem)", fontWeight: 800, color: "var(--text)" }}>
               Все товары
             </h2>
           </div>
 
-          {/* Фильтры */}
-          <div style={{
-            maxWidth: "1280px", margin: "0 auto",
-            padding: "0 2rem 1.5rem",
-            display: "flex", gap: "1.5rem",
-            alignItems: "center", flexWrap: "wrap"
-          }}>
-
-            {/* Ползунок цены */}
+          <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 2rem 1.5rem", display: "flex", gap: "1.5rem", alignItems: "center", flexWrap: "wrap" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <span style={{ fontSize: "13px", color: "var(--text-muted)", fontWeight: 600 }}>
-                Цена до:
-              </span>
+              <span style={{ fontSize: "13px", color: "var(--text-muted)", fontWeight: 600 }}>Цена до:</span>
               <input
                 type="range"
                 min={0} max={15000} step={100}
@@ -131,31 +82,17 @@ export default function HomePage() {
                 onChange={(e) => { setPriceMax(Number(e.target.value)); setCurrentPage(1); }}
                 style={{ width: "130px", accentColor: "var(--accent)", cursor: "pointer" }}
               />
-              <span style={{
-                fontSize: "13px", fontWeight: 700,
-                color: "var(--text)", minWidth: "90px",
-                background: "var(--surface2)", border: "1px solid var(--border)",
-                padding: "4px 10px", borderRadius: "8px"
-              }}>
+              <span style={{ fontSize: "13px", fontWeight: 700, color: "var(--text)", padding: "4px 10px", borderRadius: "8px", background: "var(--surface2)" }}>
                 {priceMax.toLocaleString("ru-RU")} MDL
               </span>
             </div>
-
-            {/* Сортировка */}
+            
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <span style={{ fontSize: "13px", color: "var(--text-muted)", fontWeight: 600 }}>
-                Сортировка:
-              </span>
+              <span style={{ fontSize: "13px", color: "var(--text-muted)", fontWeight: 600 }}>Сортировка:</span>
               <select
                 value={sortBy}
                 onChange={(e) => { setSortBy(e.target.value as any); setCurrentPage(1); }}
-                style={{
-                  background: "var(--surface2)", border: "1px solid var(--border)",
-                  color: "var(--text)", padding: "8px 12px",
-                  borderRadius: "8px", fontSize: "13px",
-                  cursor: "pointer", outline: "none",
-                  fontFamily: "DM Sans, sans-serif"
-                }}
+                style={{ background: "var(--surface2)", border: "1px solid var(--border)", padding: "8px 12px", borderRadius: "8px", cursor: "pointer" }}
               >
                 <option value="default">По умолчанию</option>
                 <option value="price_asc">Цена: по возрастанию</option>
@@ -165,7 +102,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Поиск и категории */}
           <SearchBar
             search={search}
             onSearchChange={(v) => { setSearch(v); setCurrentPage(1); }}
@@ -174,7 +110,6 @@ export default function HomePage() {
             foundCount={filteredProducts.length}
           />
 
-          {/* Каталог */}
           <Catalog
             products={paginatedProducts}
             loading={loading}
@@ -186,27 +121,8 @@ export default function HomePage() {
             isLiked={isLiked}
           />
 
-          {/* Пагинация */}
           {totalPages > 1 && (
-            <div style={{
-              display: "flex", justifyContent: "center",
-              gap: "8px", padding: "2rem 0 3rem"
-            }}>
-              <button
-                onClick={() => { setCurrentPage(p => Math.max(1, p - 1)); catalogRef.current?.scrollIntoView({ behavior: "smooth" }); }}
-                disabled={currentPage === 1}
-                style={{
-                  padding: "8px 16px", borderRadius: "8px",
-                  border: "1px solid var(--border)",
-                  background: "var(--surface2)", color: "var(--text-muted)",
-                  cursor: currentPage === 1 ? "not-allowed" : "pointer",
-                  opacity: currentPage === 1 ? 0.4 : 1,
-                  fontFamily: "Syne, sans-serif", fontWeight: 700
-                }}
-              >
-                ←
-              </button>
-
+            <div style={{ display: "flex", justifyContent: "center", gap: "8px", padding: "2rem 0 3rem" }}>
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                 <button
                   key={page}
@@ -215,30 +131,12 @@ export default function HomePage() {
                     width: "40px", height: "40px",
                     background: page === currentPage ? "var(--accent)" : "var(--surface2)",
                     color: page === currentPage ? "#fff" : "var(--text)",
-                    border: `1px solid ${page === currentPage ? "var(--accent)" : "var(--border)"}`,
-                    borderRadius: "8px", fontWeight: 700,
-                    cursor: "pointer", transition: "all 0.2s",
-                    fontFamily: "Syne, sans-serif", fontSize: "14px"
+                    borderRadius: "8px", cursor: "pointer"
                   }}
                 >
                   {page}
                 </button>
               ))}
-
-              <button
-                onClick={() => { setCurrentPage(p => Math.min(totalPages, p + 1)); catalogRef.current?.scrollIntoView({ behavior: "smooth" }); }}
-                disabled={currentPage === totalPages}
-                style={{
-                  padding: "8px 16px", borderRadius: "8px",
-                  border: "1px solid var(--border)",
-                  background: "var(--surface2)", color: "var(--text-muted)",
-                  cursor: currentPage === totalPages ? "not-allowed" : "pointer",
-                  opacity: currentPage === totalPages ? 0.4 : 1,
-                  fontFamily: "Syne, sans-serif", fontWeight: 700
-                }}
-              >
-                →
-              </button>
             </div>
           )}
         </section>
@@ -246,7 +144,7 @@ export default function HomePage() {
         <About ref={aboutRef} />
       </main>
 
-      <Footer />
+      {/* Footer удален, так как он в Layout.tsx */}
 
       <ProductModal
         product={selectedProduct}
